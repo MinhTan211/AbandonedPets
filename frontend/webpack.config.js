@@ -1,41 +1,25 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const config = {
+module.exports = {
   entry: "./src/index.js",
   output: {
+    path: path.join(__dirname, "/build"),
     filename: "bundle.js",
-    path: path.resolve(__dirname, "build"),
   },
   module: {
     rules: [
       {
-        test: /\.css$/,
-        exclude: /node_module/,
-        use: ["style-loader", "css-loader"],
-      },
-      {
-        test: /\.js$/,
+        test: /\.js$/, // Sẽ sử dụng babel-loader cho những file .js
+        exclude: /node_modules/, // Loại trừ thư mục node_modules
         use: ["babel-loader"],
-        exclude: /node_modules/,
       },
       {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: "babel-loader",
-          },
-          {
-            loader: "react-svg-loader",
-            options: {
-              jsx: true, // true outputs JSX tags
-            },
-          },
-        ],
+        test: /\.css$/, // Sử dụng style-loader, css-loader cho file .css
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
-  mode: "development",
   plugins: [
     //tự thêm <script src="../build/build.js"></script> vào file indẽ.html
     new HtmlWebpackPlugin({
@@ -43,5 +27,3 @@ const config = {
     }),
   ],
 };
-
-module.exports = config;
